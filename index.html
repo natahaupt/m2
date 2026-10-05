@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluación Interactiva - CEPIES</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Pacifico&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --fondo-oscuro: #0f172a;
+            --fondo-tarjeta: #1e293b;
+            --azul-brillante: #3b82f6;
+            --rojo-cepies: #EA2027;
+            --blanco: #f8fafc;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.15rem;
+            background: linear-gradient(135deg, var(--fondo-oscuro) 0%, #172554 100%);
+            color: var(--blanco);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1, h2, .titulo-candice {
+            font-family: 'Pacifico', cursive;
+            font-weight: 400;
+        }
+
+        header {
+            width: 100%;
+            text-align: center;
+            padding: 2.5rem 1rem 1.5rem;
+            background: transparent;
+        }
+
+        .logo {
+            max-width: 140px;
+            border-radius: 50%;
+            margin-bottom: 1rem;
+            box-shadow: 0 0 20px rgba(234, 32, 39, 0.3);
+            border: 3px solid rgba(255, 255, 255, 0.1);
+        }
+
+        h1 { font-size: 2.2rem; margin: 0.2rem 0; text-shadow: 0 2px 4px rgba(0,0,0,0.5); letter-spacing: 1px; }
+        h2 { font-size: 1.8rem; color: #cbd5e1; margin: 0.2rem 0; font-family: 'Quicksand', sans-serif; font-weight: 600; }
+        h3 { font-size: 1.3rem; margin: 0.5rem 0; color: #94a3b8; font-family: 'Quicksand', sans-serif; }
+        
+        .author { 
+            margin-top: 1.5rem; 
+            font-size: 1.2rem;
+            font-weight: 700; 
+            color: #fff; 
+            background: var(--rojo-cepies);
+            display: inline-block; 
+            padding: 8px 25px; 
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(234, 32, 39, 0.4);
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 850px;
+            margin: 1rem auto 4rem;
+            position: relative;
+        }
+
+        .section {
+            background: rgba(30, 41, 59, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            margin-bottom: 2rem;
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group { margin-bottom: 1.8rem; }
+
+        label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            color: #e2e8f0;
+            font-size: 1.2rem;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 16px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border-radius: 12px;
+            box-sizing: border-box;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus, textarea:focus {
+            outline: none;
+            border-color: var(--azul-brillante);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+            background: rgba(15, 23, 42, 0.9);
+        }
+
+        textarea { resize: vertical; min-height: 140px; line-height: 1.5; }
+
+        .btn {
+            background: var(--rojo-cepies);
+            color: var(--blanco);
+            border: none;
+            padding: 16px 28px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            text-align: center;
+            width: 100%;
+            box-sizing: border-box;
+            box-shadow: 0 8px 20px rgba(234, 32, 39, 0.2);
+            margin-top: 15px;
+        }
+
+        .btn:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 10px 25px rgba(234, 32, 39, 0.4);
+        }
+        
+        .btn-blue { 
+            background: var(--azul-brillante);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.2);
+        }
+        
+        .btn-blue:hover { 
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-volver {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        .btn-volver:hover { background: rgba(255, 255, 255, 0.2); }
+        
+        .claro-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        .claro-card {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 1.5rem 1rem;
+            width: 100%;
+            max-width: 230px;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
+
+        .claro-card:hover { transform: translateY(-5px); background: rgba(15, 23, 42, 0.8); }
+
+        .letra-globo {
+            font-family: 'Fredoka One', cursive;
+            font-size: 4rem;
+            margin: 0 0 10px 0;
+            line-height: 1;
+            text-shadow: 
+                0px 3px 0px rgba(255,255,255,0.4),
+                0px 8px 10px rgba(0,0,0,0.5);
+        }
+        
+        .color-c { color: #ff4757; } 
+        .color-l { color: #2ed573; } 
+        .color-a { color: #1e90ff; } 
+        .color-r { color: #ffa502; } 
+        .color-o { color: #9b59b6; } 
+
+        .claro-titulo-card {
+            font-family: 'Pacifico', cursive;
+            font-size: 1.5rem;
+            color: #fff;
+            margin: 0 0 10px 0;
+        }
+
+        .claro-desc {
+            font-size: 0.95rem;
+            color: #cbd5e1;
+            margin: 0;
+            line-height: 1.4;
+        }
+        
+        .claro-desc strong { color: #38bdf8; display: block; margin-bottom: 5px;}
+
+        .info-box {
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 4px solid var(--azul-brillante);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .checklist { list-style: none; padding: 0; margin: 0; }
+        .checklist li {
+            padding: 10px 0 10px 30px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            position: relative;
+            color: #cbd5e1;
+            font-size: 1.1rem;
+            line-height: 1.4;
+        }
+        
+        .checklist li:before {
+            content: '✨';
+            color: #38bdf8;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            font-size: 1.2rem;
+        }
+
+        .prompt-ejemplo {
+            color: #38bdf8;
+            font-size: 1.15rem;
+            font-style: italic;
+            line-height: 1.5;
+            text-align: left;
+        }
+
+        .ejemplo-animado {
+            width: 100%;
+            max-width: 300px;
+            border-radius: 16px;
+            margin: 10px auto 20px;
+            display: block;
+            border: 3px solid rgba(255,255,255,0.15);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            transition: transform 0.3s ease;
+        }
+        
+        .ejemplo-animado:hover {
+            transform: scale(1.02);
+        }
+
+        .hidden { display: none; }
+        .titulo-seccion { color: #fff; font-size: 2.2rem; margin-top: 0; margin-bottom: 1.5rem; text-align: center; }
+        
+        .ejemplo-flex {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+        
+        .img-miniatura {
+            width: 160px;
+            border-radius: 12px;
+            border: 2px solid rgba(255,255,255,0.2);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <img src="logo-cepies.jpg" alt="Logo CEPIES" class="logo">
+        <h1 class="titulo-candice">Diplomado en Educación Superior</h1>
+        <h2>Gestión Curricular Basada en Competencias</h2>
+        <h3>MÓDULO 3: Evaluación de Aprendizaje • POST GRADO - CEPIES</h3>
+        <p class="author">Lic. Mariela Nataly Limachi Limachi</p>
+    </header>
+
+    <div class="container">
+        
+        <!-- PASO 1 -->
+        <div id="seccion1" class="section active">
+            <h2 class="titulo-seccion titulo-candice">Paso 1: Identificación</h2>
+            <div class="form-group">
+                <label for="nombres">Escriba su nombre y apellido:</label>
+                <input type="text" id="nombres" placeholder="Ej. Mariela Limachi">
+            </div>
+            <button class="btn btn-blue" onclick="validarPaso1()">Crear mi instrucción inicial</button>
+        </div>
+
+        <!-- PASO 2: CON IMAGEN DE PROMPT RAPIDO -->
+        <div id="seccion2" class="section">
+            <h2 class="titulo-seccion titulo-candice">Paso 2: Su Primer Intento</h2>
+            <div class="form-group">
+                <label for="promptBasico">Si tuviera que pedirle a una Inteligencia Artificial que convierta su fotografía en un dibujo animado (estilo cartoon), ¿cómo redactaría su instrucción o "prompt" inicial?</label>
+                <textarea id="promptBasico" placeholder="Escriba aquí su primera idea..."></textarea>
+            </div>
+            
+            <div class="info-box" style="text-align: center;">
+                <label style="color: #94a3b8; font-size: 1.1rem; font-weight: bold; margin-bottom: 5px; display: inline-block;">Ejemplo de lo que genera un prompt rápido y de pocas palabras:</label>
+                <div class="prompt-ejemplo" style="margin-bottom: 15px; color: #cbd5e1;">"Dibújame como niña animada" 👇</div>
+                <!-- Asegúrate de subir prompt-rapido.png a GitHub -->
+                <img src="prompt-rapido.png" alt="Ejemplo de resultado rápido" class="ejemplo-animado" onerror="this.src='https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHp1dzNweTR5anMwZnBtdmJzZ2FvMGk3aGszZm9iOXJnbTVuMWw5diZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/L1R1tvI9svkIWwpVYr/giphy.gif'">
+            </div>
+
+            <button class="btn" onclick="prepararDescarga('promptBasico', 'Instrucción Inicial')">
+                Presionar aquí para descargar la imagen y compartirla en el grupo 💬😃
+            </button>
+        </div>
+
+        <!-- PASO 3 -->
+        <div id="seccion3" class="section">
+            <h2 class="titulo-seccion titulo-candice">Paso 3: El Método C.L.A.R.O.</h2>
+            <p style="color: #cbd5e1; text-align: center; margin-bottom: 2rem;">Analice la siguiente estructura para mejorar la precisión y calidad visual de sus instrucciones (prompts):</p>
+            
+            <div class="claro-grid">
+                <div class="claro-card">
+                    <div class="letra-globo color-c">C</div>
+                    <div class="claro-titulo-card">Contexto</div>
+                    <p class="claro-desc"><strong>¿Qué comparto y para qué?</strong><br>Ej. Adjunto mi foto para presentarme en el diplomado.</p>
+                </div>
+                
+                <div class="claro-card">
+                    <div class="letra-globo color-l">L</div>
+                    <div class="claro-titulo-card">Labor</div>
+                    <p class="claro-desc"><strong>¿Qué debe hacer la IA?</strong><br>Ej. Transforma mi foto en un estilo cartoon dibujado a mano.</p>
+                </div>
+
+                <div class="claro-card">
+                    <div class="letra-globo color-a">A</div>
+                    <div class="claro-titulo-card">Audiencia</div>
+                    <p class="claro-desc"><strong>¿Quién lo verá?</strong><br>Ej. Mis compañeros de clase, quiero transmitir alegría.</p>
+                </div>
+
+                <div class="claro-card">
+                    <div class="letra-globo color-r">R</div>
+                    <div class="claro-titulo-card">Requisitos</div>
+                    <p class="claro-desc"><strong>¿Qué detalles mantengo?</strong><br>Ej. Conserva mi ropa, rasgos faciales y usa fondo alegre.</p>
+                </div>
+
+                <div class="claro-card">
+                    <div class="letra-globo color-o">O</div>
+                    <div class="claro-titulo-card">Output</div>
+                    <p class="claro-desc"><strong>¿Qué formato?</strong><br>Ej. Entrega una sola imagen cuadrada, sin texto.</p>
+                </div>
+            </div>
+            
+            <button class="btn btn-blue" onclick="mostrarSeccion('seccion4')">Entendido, redactar mi instrucción especializada</button>
+        </div>
+
+        <!-- PASO 4: CON IMAGEN DE PROMPT BIEN GENERADO -->
+        <div id="seccion4" class="section">
+            <h2 class="titulo-seccion titulo-candice">Paso 4: Su Prompt Especializado</h2>
+            
+            <div class="info-box">
+                <strong style="color: #fff; display: block; margin-bottom: 5px; font-size: 1.2rem;">🎨 Ejemplo de un Prompt Súper Completo:</strong>
+                
+                <div class="ejemplo-flex">
+                    <!-- Asegúrate de subir prompt-bien-generado.jpg a GitHub -->
+                    <img src="prompt-bien-generado.jpg" alt="Resultado Niña Cartoon" class="img-miniatura">
+                    <div class="prompt-ejemplo" style="flex: 1; min-width: 250px;">
+                        "Esta es mi fotografía. La usaré para presentarme en el diplomado. Transforma mi foto en una ilustración caricaturesca muy tierna estilo 'chibi' retro, como un dibujo hecho a mano con lápices de colores. Quiero transmitir un aire dulce y amigable. Conserva mi cabello, mis gafas u ojos, y el diseño o estampado de mi chompa o blusa. Añade una flor rosa en mi cabello. Usa colores cálidos apagados y un fondo crema liso. Omite manos, brazos y elementos flotantes; evita el estilo hiperrealista. Entrega una imagen cuadrada, en primer plano centrado y sin texto."
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <strong style="color: #fff; display: block; margin-bottom: 10px; font-size: 1.2rem;">💡 Siga estas directrices antes de enviar:</strong>
+                <ul class="checklist">
+                    <li><strong>[C] Contexto:</strong> Indique claramente que es su fotografía y el propósito (ej. para presentarse en el diplomado).</li>
+                    <li><strong>[L] Labor:</strong> Especifique la acción y el estilo visual exacto (ej. transformar en dibujo estilo 'chibi', tierno y a mano).</li>
+                    <li><strong>[A] Audiencia:</strong> Mencione quién verá la imagen y qué emoción desea transmitir (ej. compañeros de clase, alegría).</li>
+                    <li><strong>[R] Requisitos:</strong> Detalle todo lo que no quiere perder (rasgos, cabello, ropa, lentes) y lo que desea añadir (fondo, flor, etc.).</li>
+                    <li><strong>[O] Output:</strong> Defina el formato exacto de entrega (ej. imagen cuadrada sin texto).</li>
+                </ul>
+            </div>
+
+            <div class="form-group">
+                <label for="promptMejorado">Redacte su prompt especializado uniendo todos estos detalles:</label>
+                <textarea id="promptMejorado" placeholder="Escriba aquí aplicando su propio estilo a cada punto..."></textarea>
+            </div>
+            
+            <button class="btn btn-volver" onclick="mostrarSeccion('seccion3')">
+                👈 Volver al cuadro C.L.A.R.O.
+            </button>
+
+            <button class="btn" onclick="prepararDescarga('promptMejorado', 'Instrucción Especializada')">
+                Presionar aquí para descargar la imagen y compartirla en el grupo 💬😃
+            </button>
+            
+            <div id="mensajeFinal" class="hidden" style="text-align: center; color: #38bdf8; font-size: 1.3rem; font-weight: bold; margin-top: 1.5rem;">
+                ¡Excelente trabajo! Verifique su galería de descargas y comparta su tarjeta en el grupo de WhatsApp.
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function mostrarSeccion(id) {
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function validarPaso1() {
+            const nombre = document.getElementById('nombres').value.trim();
+            if(!nombre) {
+                alert("Por favor, escriba su nombre y apellido para continuar.");
+                return;
+            }
+            mostrarSeccion('seccion2');
+        }
+
+        function dibujarRectanguloRedondeado(ctx, x, y, ancho, alto, radio) {
+            ctx.beginPath();
+            ctx.moveTo(x + radio, y);
+            ctx.lineTo(x + ancho - radio, y);
+            ctx.quadraticCurveTo(x + ancho, y, x + ancho, y + radio);
+            ctx.lineTo(x + ancho, y + alto - radio);
+            ctx.quadraticCurveTo(x + ancho, y + alto, x + ancho - radio, y + alto);
+            ctx.lineTo(x + radio, y + alto);
+            ctx.quadraticCurveTo(x, y + alto, x, y + alto - radio);
+            ctx.lineTo(x, y + radio);
+            ctx.quadraticCurveTo(x, y, x + radio, y);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+        }
+
+        function prepararDescarga(textareaId, tipo) {
+            const nombre = document.getElementById('nombres').value.trim();
+            const texto = document.getElementById(textareaId).value.trim();
+
+            if(!texto) {
+                alert("Por favor, redacte su texto antes de generar la imagen.");
+                return;
+            }
+
+            const logoObj = new Image();
+            logoObj.crossOrigin = "anonymous";
+            logoObj.src = "logo-cepies.jpg"; // Llamada limpia, funcionará en GitHub Pages
+
+            logoObj.onload = function() {
+                generarCanvas(textareaId, tipo, nombre, texto, logoObj);
+            };
+            
+            logoObj.onerror = function() {
+                console.log("No se pudo cargar el logo, dibujando sin logo.");
+                generarCanvas(textareaId, tipo, nombre, texto, null);
+            };
+        }
+
+        function generarCanvas(textareaId, tipo, nombre, texto, logoImg) {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            const anchoCanvas = 900;
+            const margenExterior = 40;
+            const margenInterior = 40;
+            const anchoTarjeta = anchoCanvas - (margenExterior * 2);
+            const maxWidthTexto = anchoTarjeta - (margenInterior * 2);
+            const lineHeight = 38; 
+            
+            ctx.font = "24px 'Quicksand', sans-serif";
+            const palabras = texto.split(' ');
+            let lineas = [];
+            let lineaActual = '';
+
+            for(let n = 0; n < palabras.length; n++) {
+                let testLinea = lineaActual + palabras[n] + ' ';
+                let metrica = ctx.measureText(testLinea);
+                if (metrica.width > maxWidthTexto && n > 0) {
+                    lineas.push(lineaActual);
+                    lineaActual = palabras[n] + ' ';
+                } else {
+                    lineaActual = testLinea;
+                }
+            }
+            lineas.push(lineaActual);
+
+            const altoEncabezado = 180;
+            const altoTexto = lineas.length * lineHeight;
+            const altoPieDePagina = 80;
+            const altoTarjeta = altoEncabezado + altoTexto + altoPieDePagina;
+            const altoCanvas = altoTarjeta + (margenExterior * 2);
+
+            canvas.width = anchoCanvas;
+            canvas.height = Math.max(altoCanvas, 400);
+
+            const gradienteFondo = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            gradienteFondo.addColorStop(0, "#0f172a");
+            gradienteFondo.addColorStop(1, "#172554");
+            ctx.fillStyle = gradienteFondo;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = "#1e293b"; 
+            ctx.strokeStyle = "#3b82f6"; 
+            ctx.lineWidth = 3;
+            dibujarRectanguloRedondeado(ctx, margenExterior, margenExterior, anchoTarjeta, altoTarjeta, 20);
+
+            if(logoImg) {
+                const logoSize = 100;
+                const logoX = canvas.width - margenExterior - margenInterior - logoSize + 10;
+                const logoY = margenExterior + margenInterior - 10;
+                
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(logoX + logoSize/2, logoY + logoSize/2, logoSize/2, 0, Math.PI * 2, true);
+                ctx.closePath();
+                ctx.clip();
+                ctx.drawImage(logoImg, logoX, logoY, logoSize, logoSize);
+                ctx.restore();
+            }
+
+            const startX = margenExterior + margenInterior;
+            let currentY = margenExterior + margenInterior + 20;
+
+            ctx.fillStyle = "#EA2027"; 
+            ctx.font = "400 38px 'Pacifico', cursive";
+            ctx.fillText(nombre, startX, currentY);
+            
+            currentY += 40;
+
+            ctx.fillStyle = "#cbd5e1";
+            ctx.font = "bold 22px 'Quicksand', sans-serif";
+            ctx.fillText(tipo.toUpperCase(), startX, currentY);
+
+            currentY += 30;
+
+            ctx.beginPath();
+            ctx.moveTo(startX, currentY);
+            ctx.lineTo(canvas.width - margenExterior - margenInterior, currentY);
+            ctx.strokeStyle = "rgba(255,255,255,0.1)";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            currentY += 45;
+
+            ctx.fillStyle = "#f8fafc";
+            ctx.font = "24px 'Quicksand', sans-serif";
+            for(let i = 0; i < lineas.length; i++) {
+                ctx.fillText(lineas[i], startX, currentY);
+                currentY += lineHeight;
+            }
+
+            currentY += 20;
+            ctx.fillStyle = "#64748b";
+            ctx.font = "italic 18px 'Quicksand', sans-serif";
+            ctx.fillText("Módulo 3: Evaluación de Aprendizaje • Post Grado CEPIES", startX, currentY);
+
+            const enlace = document.createElement('a');
+            enlace.download = tipo.replace(/ /g,"_") + "_" + nombre.replace(/ /g,"_") + ".jpg";
+            enlace.href = canvas.toDataURL("image/jpeg");
+            enlace.click();
+
+            if(textareaId === 'promptBasico') {
+                setTimeout(() => { mostrarSeccion('seccion3'); }, 1000);
+            } else {
+                document.getElementById('mensajeFinal').classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
