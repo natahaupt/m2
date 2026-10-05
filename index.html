@@ -49,6 +49,7 @@
             margin-bottom: 1rem;
             box-shadow: 0 0 20px rgba(234, 32, 39, 0.3);
             border: 3px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(255,255,255,0.8);
         }
 
         h1 { font-size: 2.2rem; margin: 0.2rem 0; text-shadow: 0 2px 4px rgba(0,0,0,0.5); letter-spacing: 1px; }
@@ -262,15 +263,19 @@
             text-align: left;
         }
 
+        /* Arreglo anti-aplastamiento para la imagen del Paso 2 */
         .ejemplo-animado {
             width: 100%;
             max-width: 300px;
+            min-height: 200px;
             border-radius: 16px;
             margin: 10px auto 20px;
             display: block;
             border: 3px solid rgba(255,255,255,0.15);
             box-shadow: 0 10px 25px rgba(0,0,0,0.4);
             transition: transform 0.3s ease;
+            background-color: rgba(255, 255, 255, 0.05);
+            object-fit: cover;
         }
         
         .ejemplo-animado:hover {
@@ -288,19 +293,23 @@
             margin-top: 15px;
         }
         
+        /* Arreglo anti-aplastamiento para la imagen del Paso 4 */
         .img-miniatura {
             width: 160px;
+            min-height: 160px;
             border-radius: 12px;
             border: 2px solid rgba(255,255,255,0.2);
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            background-color: rgba(255, 255, 255, 0.05);
+            object-fit: cover;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <!-- Logo principal -->
-        <img src="logo-cepies.jpg" alt="Logo CEPIES" class="logo">
+        <!-- Logo principal blindado -->
+        <img src="logo-cepies.jpg?v=final" alt="Logo CEPIES" class="logo" onerror="this.src='https://natahaupt.github.io/m2/logo-cepies.jpg';">
         <h1 class="titulo-candice">Diplomado en Educación Superior</h1>
         <h2>Gestión Curricular Basada en Competencias</h2>
         <h3>MÓDULO 3: Evaluación de Aprendizaje • POST GRADO - CEPIES</h3>
@@ -319,7 +328,7 @@
             <button class="btn btn-blue" onclick="validarPaso1()">Crear mi instrucción inicial</button>
         </div>
 
-        <!-- PASO 2: CON IMAGEN DE PROMPT RAPIDO -->
+        <!-- PASO 2 -->
         <div id="seccion2" class="section">
             <h2 class="titulo-seccion titulo-candice">Paso 2: Su Primer Intento</h2>
             <div class="form-group">
@@ -332,8 +341,8 @@
                 <div class="prompt-ejemplo" style="margin-bottom: 15px; color: #cbd5e1;">"Dibújame como niña animada" 👇</div>
                 
                 <!-- Imagen Blindada Paso 2 -->
-                <img src="prompt-rapido.png" alt="Ejemplo de resultado rápido" class="ejemplo-animado" 
-                     onerror="this.src='prompt-rapido.jpg'; this.onerror=function(){this.src='https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHp1dzNweTR5anMwZnBtdmJzZ2FvMGk3aGszZm9iOXJnbTVuMWw5diZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/L1R1tvI9svkIWwpVYr/giphy.gif'};">
+                <img src="prompt-rapido.png?v=final" alt="Ejemplo de resultado rápido" class="ejemplo-animado" 
+                     onerror="this.src='https://natahaupt.github.io/m2/prompt-rapido.png';">
             </div>
 
             <button class="btn" onclick="prepararDescarga('promptBasico', 'Instrucción Inicial')">
@@ -381,7 +390,7 @@
             <button class="btn btn-blue" onclick="mostrarSeccion('seccion4')">Entendido, redactar mi instrucción especializada</button>
         </div>
 
-        <!-- PASO 4: CON IMAGEN DE PROMPT BIEN GENERADO BLINDADA -->
+        <!-- PASO 4 -->
         <div id="seccion4" class="section">
             <h2 class="titulo-seccion titulo-candice">Paso 4: Su Prompt Especializado</h2>
             
@@ -390,9 +399,9 @@
                 
                 <div class="ejemplo-flex">
                     
-                    <!-- Imagen Blindada Paso 4: Busca .jpg, si falla busca .png, y si falla pone image_231c00.png -->
-                    <img src="prompt-bien-generado.jpg" alt="Resultado Niña Cartoon" class="img-miniatura" 
-                         onerror="this.src='prompt-bien-generado.png'; this.onerror=function(){this.src='image_231c00.png'};">
+                    <!-- Imagen Blindada Paso 4 -->
+                    <img src="prompt-bien-generado.jpg?v=final" alt="Resultado Niña Cartoon" class="img-miniatura" 
+                         onerror="this.src='https://natahaupt.github.io/m2/prompt-bien-generado.jpg';">
                     
                     <div class="prompt-ejemplo" style="flex: 1; min-width: 250px;">
                         "Esta es mi fotografía. La usaré para presentarme en el diplomado. Transforma mi foto en una ilustración caricaturesca muy tierna estilo 'chibi' retro, como un dibujo hecho a mano con lápices de colores. Quiero transmitir un aire dulce y amigable. Conserva mi cabello, mis gafas u ojos, y el diseño o estampado de mi chompa o blusa. Añade una flor rosa en mi cabello. Usa colores cálidos apagados y un fondo crema liso. Omite manos, brazos y elementos flotantes; evita el estilo hiperrealista. Entrega una imagen cuadrada, en primer plano centrado y sin texto."
@@ -474,7 +483,7 @@
 
             const logoObj = new Image();
             logoObj.crossOrigin = "anonymous";
-            logoObj.src = "logo-cepies.jpg"; // Toma el logo directamente del repositorio
+            logoObj.src = "https://natahaupt.github.io/m2/logo-cepies.jpg?v=final"; 
 
             logoObj.onload = function() {
                 generarCanvas(textareaId, tipo, nombre, texto, logoObj);
